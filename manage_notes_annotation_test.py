@@ -71,14 +71,18 @@ MULTIPLE_ANNOTATIONS_WITH_NOTES = {
   "notes": "test notes",
 }
 
+def process_data(initial_data):
+  data = manage_notes_annotation(copy.deepcopy(initial_data))
+  return data
+
 class TestManageNotesAnnotation(unittest.TestCase):
 
     def test_note_annotation_no_notes(self):
-      data = manage_notes_annotation(copy.deepcopy(NOTE_ANNOTATION_NO_NOTES))
+      data = process_data(NOTE_ANNOTATION_NO_NOTES)
       self.assertNotIn("annotations", data)
 
     def test_multiple_annotations_no_notes(self):
-      data = manage_notes_annotation(copy.deepcopy(MULTIPLE_ANNOTATIONS_NO_NOTES))
+      data = process_data(MULTIPLE_ANNOTATIONS_NO_NOTES)
       self.assertEqual(len(data["annotations"]), len(MULTIPLE_ANNOTATIONS_NO_NOTES["annotations"]) - 1)
       self.assertEqual(data["annotations"][0]["description"], "test description")
 
