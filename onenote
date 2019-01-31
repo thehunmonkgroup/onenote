@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+task_number=${1}
+consume_input=${2}
+
+progname=$(basename ${0})
+newline="###NEWLINE###"
+consume_arg="-"
+output=""
+
+usage() {
+  echo "Usage: ${progname} <task_id>
+
+Edit multiline taskwarrior notes in vi/vim.
+
+Setup a 'notes' UDA for taskwarrior:
+  task config uda.notes.type string
+  task config uda.notes.label Notes
+
+Notes can also be piped to standard in:
+
+  echo \"foo\" | ${progname} <task_id> -
+
+CAVEATS:
+
+Due to a current bug in taskwarrior newlines are represented internally by the
+marker ${newline}:
+  https://github.com/GothenburgBitFactory/taskwarrior/issues/2107
+"
+
+  exit 1
+}
+
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+  usage
+  exit 1
+else
+  if [ $# -eq 2 ]; then
+    if [ "${2}" != "${consume_arg}" ]; then
+      usage
+      exit 1
+    else
+      while IFS='$\n' read -r line; do
+        if [ -z "${output}" ]; then
+          output="${line}"
+        else
+          output="${output}${newline}${line}"
+        fi
+      done
+      task ${task_number} modify notes:"${output}"
+    fi
+  else
+    notes=$(task _get ${task_number}.notes)
+    if [ $? -eq 0 ]; then
+      echo "${notes}" | sed "s/${newline}/\n/g" | vipe | ${0} ${task_number} ${consume_arg}
+    fi
+  fi
+fi
