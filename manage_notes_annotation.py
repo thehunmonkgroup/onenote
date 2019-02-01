@@ -27,6 +27,16 @@ def current_time_iso():
 def check_notes(data):
   return "notes" in data and data["notes"].strip()
 
+def check_notes_updated(data_before, data_after):
+  if not "notes" in data_before and not "notes" in data_after:
+    return False
+  elif not "notes" in data_before and "notes" in data_after:
+    return data_after["notes"].strip()
+  elif "notes" in data_before and not "notes" in data_after:
+    return data_before["notes"].strip()
+  else:
+    return data_before["notes"].strip() != data_after["notes"].strip()
+
 def check_notes_annotation(data):
   if "annotations" in data:
     for i, annotation in enumerate(data["annotations"]):
@@ -56,20 +66,35 @@ def remove_notes_annotation(data):
       data.pop('annotations', None)
   return data
 
-def manage_notes_annotation(data):
-  notes_exist = check_notes(data)
-  notes_annotation_exists = check_notes_annotation(data)
+def manage_notes_annotation(data_before, data_after):
+  notes_exist = check_notes(data_after)
+  notes_annotation_exists = check_notes_annotation(data_after)
+  if check_notes_updated(data_before, data_after):
+    # Force removal here and mark as removed, allows a new annotation
+    # with an updated entry time for the notes.
+    data_after = remove_notes_annotation(data_after)
+    notes_annotation_exists = False
   if notes_exist and not notes_annotation_exists:
-      data = add_notes_annotation(data)
+      data_after = add_notes_annotation(data_after)
   if not notes_exist and notes_annotation_exists:
-      data = remove_notes_annotation(data)
-  return data
+      data_after = remove_notes_annotation(data_after)
+  return data_after
 
 if __name__ == '__main__':
 
-  task = json.loads(sys.stdin.readline())
-  modified_task = manage_notes_annotation(task)
-  log(json.dumps(modified_task, sort_keys=True, indent=2))
+  try:
+    task_before = json.loads(sys.stdin.readline())
+    task_after = json.loads(sys.stdin.readline())
+    log("Task before modification")
+    log(json.dumps(task_before, sort_keys=True, indent=2))
+    log("Task after modification")
+    log(json.dumps(task_after, sort_keys=True, indent=2))
+    modified_task = manage_notes_annotation(task_before, task_after)
+    log("Task after hook adjustments")
+    log(json.dumps(modified_task, sort_keys=True, indent=2))
+  except:
+    e = sys.exc_info()[0]
+    log("Error: %s" % e)
 
   print(json.dumps(modified_task))
   sys.exit(0)
