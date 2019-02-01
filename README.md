@@ -18,8 +18,9 @@ automatically opens a Vim-style editor for managing notes efficiently.
 
 #### Dependencies
 
-OneNote needs a 'pipe editor' to do its job, and currently this is provided
-by ```vipe```, readily available in the ```moreutils``` package on most platforms.
+ * Bash
+ * Vipe pipe editor (readily available in the ```moreutils``` package on most platforms)
+ * Python (if using the modify hook)
 
 #### TaskWarrior configuration
 
