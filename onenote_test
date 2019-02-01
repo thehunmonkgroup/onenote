@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Leverages the basht testing library:
+# https://github.com/progrium/basht
+
+progname="onenote"
+executable="$(pwd)/${progname}"
+newline="###NEWLINE###"
+
+export ONENOTE_TEST_HARNESS=1
+
+T_noArgsReturnsError() {
+  ${executable} > /dev/null
+  [[ $? -eq 1 ]]
+}
+
+T_moreThanTwoArgsReturnsError() {
+  ${executable} 1 2 3 > /dev/null
+  [[ $? -eq 1 ]]
+}
+
+T_twoArgsIncorrectSecondArgReturnsError() {
+  ${executable} 1 2 > /dev/null
+  [[ $? -eq 1 ]]
+}
+
+T_validTaskWithNoNotesReturnsEmptyNote() {
+  export ONENOTE_TEST_NOTES=""
+  result="$(${executable} 1)"
+  echo "No notes result: ${result}"
+  [[ "${result}" = "${ONENOTE_TEST_NOTES}" ]]
+}
+
+T_validTaskWithNotesReturnsValidFormattedNote() {
+  export ONENOTE_TEST_NOTES="foo${newline}bar${newline}${newline}baz"
+  result="$(${executable} 1)"
+  echo "With notes result: ${result}"
+  [[ "${result}" = "${ONENOTE_TEST_NOTES}" ]]
+}
+
