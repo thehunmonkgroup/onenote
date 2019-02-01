@@ -50,6 +50,15 @@ if [ -n "${ONENOTE_TEST_HARNESS}" ]; then
   }
 fi
 
+if [ "$(which vipe)" = "" ]; then
+  echo
+  echo "ERROR: The vipe binary must be installed and in your path!"
+  echo "  see https://joeyh.name/code/moreutils"
+  echo
+  usage
+  exit 1
+fi
+
 if [ $# -lt 1 ] || [ $# -gt 2 ]; then
   usage
   exit 1
