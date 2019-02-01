@@ -7,6 +7,7 @@ progname=$(basename ${0})
 newline="###NEWLINE###"
 consume_arg="-"
 output=""
+pipe_editor="vipe"
 
 usage() {
   echo "Usage: ${progname} <task_id>
@@ -29,6 +30,20 @@ marker ${newline}:
 "
 }
 
+
+# Override the system task binary and pipe editor in testing env.
+if [ -n "${ONENOTE_TEST_HARNESS}" ]; then
+  pipe_editor="cat"
+  task() {
+    if [ "${1}" = "_get" ]; then
+      echo "${ONENOTE_TEST_NOTES}"
+    else
+      local notes="${3}"
+      echo "${notes:6}"
+    fi
+  }
+fi
+
 if [ $# -lt 1 ] || [ $# -gt 2 ]; then
   usage
   exit 1
@@ -50,7 +65,7 @@ else
   else
     notes=$(task _get ${task_number}.notes)
     if [ $? -eq 0 ]; then
-      echo "${notes}" | sed "s/${newline}/\n/g" | vipe | ${0} ${task_number} ${consume_arg}
+      echo "${notes}" | sed "s/${newline}/\n/g" | ${pipe_editor} | ${0} ${task_number} ${consume_arg}
     fi
   fi
 fi
