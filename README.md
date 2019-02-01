@@ -66,7 +66,9 @@ task <task_id> modify notes:
 
 Notes can also be piped from other processes directly to a task:
 
-```echo "foo" | onenote <task_id> -```
+```
+echo "foo" | onenote <task_id> -
+```
 
 **Just be aware this will overwrite any existing notes on the task!**
 
