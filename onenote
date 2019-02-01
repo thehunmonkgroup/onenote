@@ -24,6 +24,8 @@ Notes can also be piped to standard in:
 
 CAVEATS:
 
+OneNote depends on the vipe pipe editor being installed and in your path.
+
 Due to a current bug in taskwarrior newlines are represented internally by the
 marker ${newline}:
   https://github.com/GothenburgBitFactory/taskwarrior/issues/2107
