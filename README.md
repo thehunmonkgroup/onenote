@@ -72,6 +72,25 @@ echo "foo" | onenote <task_id> -
 
 **Just be aware this will overwrite any existing notes on the task!**
 
+### Support
+
+The issue tracker for this project is provided to file bug reports, feature
+requests, and project tasks -- support requests are not accepted via the issue
+tracker. For all support-related issues, including configuration, usage, and
+training, consider hiring a competent consultant.
+
+### Unit tests
+
+OneNote has full unit test coverage. They can be run with:
+
+```
+cd /path/to/onenote
+./run-tests.sh
+```
+
+Python > 2.6 and the [basht](https://github.com/progrium/basht) testing
+framework are required.
+
 ### Caveats
 
 While it's possible to modify the ```notes``` UDA directly using standard
