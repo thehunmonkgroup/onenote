@@ -27,8 +27,6 @@ Due to a current bug in taskwarrior newlines are represented internally by the
 marker ${newline}:
   https://github.com/GothenburgBitFactory/taskwarrior/issues/2107
 "
-
-  exit 1
 }
 
 if [ $# -lt 1 ] || [ $# -gt 2 ]; then
