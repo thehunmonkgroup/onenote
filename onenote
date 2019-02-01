@@ -37,6 +37,12 @@ if [ -n "${ONENOTE_TEST_HARNESS}" ]; then
   task() {
     if [ "${1}" = "_get" ]; then
       echo "${ONENOTE_TEST_NOTES}"
+    elif [ "${1}" = "_config" ]; then
+      if [ -n "${ONENOTE_MISSING_NOTES}" ]; then
+        echo ""
+      else
+        echo "uda.notes.label\nuda.notes.type"
+      fi
     else
       local notes="${3}"
       echo "${notes:6}"
@@ -63,6 +69,10 @@ else
       task ${task_number} modify notes:"${output}"
     fi
   else
+    if [ "$(task _config | grep 'uda.notes.type')" = "" ] || [ "$(task _config | grep 'uda.notes.label')" = "" ]; then
+      usage
+      exit 1
+    fi
     notes=$(task _get ${task_number}.notes)
     if [ $? -eq 0 ]; then
       echo "${notes}" | sed "s/${newline}/\n/g" | ${pipe_editor} | ${0} ${task_number} ${consume_arg}

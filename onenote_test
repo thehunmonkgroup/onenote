@@ -24,6 +24,11 @@ T_twoArgsIncorrectSecondArgReturnsError() {
   [[ $? -eq 1 ]]
 }
 
+T_correctArgsNoUdaNotesReturnsError() {
+  ONENOTE_MISSING_NOTES="1" ${executable} 1 > /dev/null
+  [[ $? -eq 1 ]]
+}
+
 T_validTaskWithNoNotesReturnsEmptyNote() {
   export ONENOTE_TEST_NOTES=""
   result="$(${executable} 1)"
