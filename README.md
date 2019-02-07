@@ -73,6 +73,19 @@ echo "foo" | onenote <task_id> -
 
 **Just be aware this will overwrite any existing notes on the task!**
 
+### VIT configuration (optional)
+
+If you're using a version of [VIT](https://github.com/scottkosty/vit) that
+supports map commands, you can easily add a command to open a task's notes via
+onenote:
+
+```
+map o=:!wr onenote %TASKID<Return>
+```
+
+Then in VIT, highlighting a task and hitting the ```o``` key will open the
+notes editor, and saving the note will return you to VIT -- pretty convenient!
+
 ### Support
 
 The issue tracker for this project is provided to file bug reports, feature
