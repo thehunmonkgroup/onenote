@@ -1,17 +1,17 @@
 # OneNote
-Easily manage embedded multiline notes in [TaskWarrior](https://taskwarrior.org)
+Easily manage embedded multiline notes in [Taskwarrior](https://taskwarrior.org)
 
 ### Why would you want this?
 
-While TaskWarrior provides a robust system for annotating tasks, using these
+While Taskwarrior provides a robust system for annotating tasks, using these
 to include extensive notes on a task is cumbersome and difficult to edit in my
 experience.
 
 There are some third party scripts that associate files with tasks, however
 this involves a whole other system that has to be synchronized/maintained,
-which seems unnecessary given TaskWarrior's current syncing capabilities.
+which seems unnecessary given Taskwarrior's current syncing capabilities.
 
-OneNote manages notes in a custom data field directly in TaskWarrior, and
+OneNote manages notes in a custom data field directly in Taskwarrior, and
 automatically opens a Vim-style editor for managing notes efficiently.
 
 ### Installation
@@ -20,9 +20,9 @@ automatically opens a Vim-style editor for managing notes efficiently.
 
  * Bash
  * Vipe pipe editor (readily available in the ```moreutils``` package on most platforms)
- * Python (if using the modify hook)
+ * Python (if using the add/modify hooks)
 
-#### TaskWarrior configuration
+#### Taskwarrior configuration
 
 OneNote expects a ```notes``` UDA to be available for data storage.
 
@@ -50,17 +50,17 @@ notes on a task in an intelligent fashion:
 To use the hook, copy or symlink ```manage_notes_annotation.py``` to your
 hooks directory, and make sure it's executeable.
 
- * For the add hook name it ```on-add-onenote-manage-notes-annotation.py```
- * For the modify hook name it ```on-modify-onenote-manage-notes-annotation.py```
+ * For the add hook, name it ```on-add-onenote-manage-notes-annotation.py```
+ * For the modify hook, name it ```on-modify-onenote-manage-notes-annotation.py```
 
 ### Usage
 
 To add/edit notes attached to a task, execute ```onenote <task_id>```, which
-automatically opens a Vim-style editor for the note. Upon save/exit of the
+automatically opens a Vim-style editor for the notes. Upon save/exit of the
 editor, the new notes are updated on the task.
 
-To remove a note, you can use the procedure above and completely remove all
-note contents in the editor, or for a shortcut modify the
+To remove notes, you can use the procedure above and completely remove all
+content in the editor, or for a shortcut modify the
 ```notes``` attribute directly:
 
 ```
@@ -86,7 +86,7 @@ map o=:!wr onenote %TASKID<Return>
 ```
 
 Then in VIT, highlighting a task and hitting the ```o``` key will open the
-notes editor, and saving the note will return you to VIT -- pretty convenient!
+notes editor, and saving will return you to VIT -- pretty convenient!
 
 ### Support
 
@@ -104,17 +104,17 @@ cd /path/to/onenote
 ./run-tests.sh
 ```
 
-Python > 2.6 and the [basht](https://github.com/progrium/basht) testing
+Python >= 2.7 and the [basht](https://github.com/progrium/basht) testing
 framework are required.
 
 ### Caveats
 
 While it's possible to modify the ```notes``` UDA directly using standard
-TaskWarrior syntax, it's not advisable (except in the deletion case), as, by
+Taskwarrior syntax, it's not advisable (except in the deletion case), as, by
 necessity, multiline UDA fields are stored as a single-line string with newline
 separators, which would be pretty tedious to navigate directly.
 
 Due to a
 [current bug](https://github.com/GothenburgBitFactory/taskwarrior/issues/2107)
-in taskwarrior newlines are represented internally by the marker
+in Taskwarrior newlines are represented internally by the marker
 ```###NEWLINE###```
