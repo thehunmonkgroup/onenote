@@ -38,9 +38,9 @@ task config uda.notes.label Notes
 Place the ```onenote``` script anywhere in your PATH and make sure it's
 executable.
 
-#### Modify hook
+#### Add/modify hooks
 
-The optional modify hook manages an annotation related to the existence of
+The optional add/modify hooks manage an annotation related to the existence of
 notes on a task in an intelligent fashion:
 
  * Adds an annotation when a new note is added
@@ -48,8 +48,10 @@ notes on a task in an intelligent fashion:
  * Removes the annotation if notes are completely removed
 
 To use the hook, copy or symlink ```manage_notes_annotation.py``` to your
-hooks directory as ```on-modify-onenote-manage-notes-annotation.py``` and make
-sure it's executeable.
+hooks directory, and make sure it's executeable.
+
+ * For the add hook name it ```on-add-onenote-manage-notes-annotation.py```
+ * For the modify hook name it ```on-modify-onenote-manage-notes-annotation.py```
 
 ### Usage
 

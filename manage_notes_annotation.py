@@ -80,21 +80,49 @@ def manage_notes_annotation(data_before, data_after):
       data_after = remove_notes_annotation(data_after)
   return data_after
 
+def read_stdin():
+  first_line = sys.stdin.readline()
+  second_line = sys.stdin.readline()
+  return first_line, second_line
+
+def load_task_data(first_line, second_line):
+  if second_line:
+    try:
+      task_before = json.loads(first_line)
+      task_after = json.loads(second_line)
+      return task_before, task_after
+    except:
+      exit_error()
+  else:
+    try:
+      task_after = json.loads(first_line)
+      return {}, task_after
+    except:
+      exit_error()
+
+def exit_error():
+  e = sys.exc_info()[0]
+  log("Error: %s" % e)
+  sys.exit(1)
+
 if __name__ == '__main__':
 
   try:
-    task_before = json.loads(sys.stdin.readline())
-    task_after = json.loads(sys.stdin.readline())
-    log("Task before modification")
-    log(json.dumps(task_before, sort_keys=True, indent=2))
+    first_line, second_line = read_stdin()
+    task_before, task_after = load_task_data(first_line, second_line)
+    if task_before:
+      log("Modifying current task")
+      log("Task before modification")
+      log(json.dumps(task_before, sort_keys=True, indent=2))
+    else:
+      log("Adding new task")
     log("Task after modification")
     log(json.dumps(task_after, sort_keys=True, indent=2))
     modified_task = manage_notes_annotation(task_before, task_after)
     log("Task after hook adjustments")
     log(json.dumps(modified_task, sort_keys=True, indent=2))
   except:
-    e = sys.exc_info()[0]
-    log("Error: %s" % e)
+    exit_error()
 
   print(json.dumps(modified_task))
   sys.exit(0)
