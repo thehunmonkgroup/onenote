@@ -5,6 +5,7 @@ consume_input=${2}
 
 progname=$(basename ${0})
 newline="###NEWLINE###"
+linefeed=$'\n'
 consume_arg="-"
 output=""
 pipe_editor="vipe"
@@ -86,7 +87,8 @@ else
     fi
     notes=$(task _get ${task_number}.notes)
     if [ $? -eq 0 ]; then
-      echo "${notes}" | sed "s/${newline}/\n/g" | ${pipe_editor} | ${0} ${task_number} ${consume_arg}
+      # The literal line feed is necessary for POSIX compatibility with sed.
+      echo "${notes}" | sed "s/${newline}/\\$linefeed/g" | ${pipe_editor} | ${0} ${task_number} ${consume_arg}
     fi
   fi
 fi
