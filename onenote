@@ -4,7 +4,7 @@ task_number=${1}
 consume_input=${2}
 
 progname=$(basename ${0})
-newline="###NEWLINE###"
+newline="\n"
 linefeed=$'\n'
 consume_arg="-"
 output=""
@@ -26,10 +26,6 @@ Notes can also be piped to standard in:
 CAVEATS:
 
 OneNote depends on the vipe pipe editor being installed and in your path.
-
-Due to a current bug in taskwarrior newlines are represented internally by the
-marker ${newline}:
-  https://github.com/GothenburgBitFactory/taskwarrior/issues/2107
 "
 }
 
@@ -88,7 +84,7 @@ else
     notes=$(task _get ${task_number}.notes)
     if [ $? -eq 0 ]; then
       # The literal line feed is necessary for POSIX compatibility with sed.
-      echo "${notes}" | sed "s/${newline}/\\$linefeed/g" | ${pipe_editor} | ${0} ${task_number} ${consume_arg}
+      echo "${notes}" | ${pipe_editor} | ${0} ${task_number} ${consume_arg}
     fi
   fi
 fi

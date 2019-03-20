@@ -5,7 +5,7 @@
 
 progname="onenote"
 executable="$(pwd)/${progname}"
-newline="###NEWLINE###"
+newline="\n"
 
 export ONENOTE_TEST_HARNESS=1
 

@@ -109,12 +109,7 @@ framework are required.
 
 ### Caveats
 
-While it's possible to modify the ```notes``` UDA directly using standard
-Taskwarrior syntax, it's not advisable (except in the deletion case), as, by
-necessity, multiline UDA fields are stored as a single-line string with newline
-separators, which would be pretty tedious to navigate directly.
-
-Due to a
-[current bug](https://github.com/GothenburgBitFactory/taskwarrior/issues/2107)
-in Taskwarrior newlines are represented internally by the marker
-```###NEWLINE###```
+While it's possible to edit the ```notes``` UDA directly using standard
+```task X edit``` syntax, it's not advisable, as TaskWarrior stores multiline
+string UDA fields as a single-line string with newline separators, which would
+be pretty tedious to edit directly.
