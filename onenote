@@ -8,7 +8,8 @@ newline="###NEWLINE###"
 linefeed=$'\n'
 consume_arg="-"
 output=""
-pipe_editor="vipe"
+default_pipe_editor="vipe"
+pipe_editor=${ONENOTE_PIPE_EDITOR:-${default_pipe_editor}}
 
 usage() {
   echo "Usage: ${progname} <task_id>
@@ -36,7 +37,6 @@ marker ${newline}:
 
 # Override the system task binary and pipe editor in testing env.
 if [ -n "${ONENOTE_TEST_HARNESS}" ]; then
-  pipe_editor="cat"
   task() {
     if [ "${1}" = "_get" ]; then
       echo "${ONENOTE_TEST_NOTES}"
@@ -53,10 +53,9 @@ if [ -n "${ONENOTE_TEST_HARNESS}" ]; then
   }
 fi
 
-if [ "$(which vipe)" = "" ]; then
+if [ "$(which ${pipe_editor})" = "" ]; then
   echo
-  echo "ERROR: The vipe binary must be installed and in your path!"
-  echo "  see https://joeyh.name/code/moreutils"
+  echo "ERROR: The '${pipe_editor}' binary must be installed and in your path!"
   echo
   usage
   exit 1

@@ -8,6 +8,7 @@ executable="$(pwd)/${progname}"
 newline="###NEWLINE###"
 
 export ONENOTE_TEST_HARNESS=1
+export ONENOTE_PIPE_EDITOR="cat"
 
 T_noArgsReturnsError() {
   ${executable} > /dev/null
