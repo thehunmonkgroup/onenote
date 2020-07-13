@@ -85,6 +85,9 @@ else
       exit 1
     fi
     notes=$(task _get ${task_number}.notes)
+    if [ -n "${ONENOTE_DEFAULT_CONTENT}" -a -z "${notes}" ]; then
+      notes="${ONENOTE_DEFAULT_CONTENT}"
+    fi
     if [ $? -eq 0 ]; then
       # The literal line feed is necessary for POSIX compatibility with sed.
       echo "${notes}" | sed "s/${newline}/\\$linefeed/g" | ${pipe_editor} | ${0} ${task_number} ${consume_arg}
