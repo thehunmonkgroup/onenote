@@ -12,7 +12,7 @@ this involves a whole other system that has to be synchronized/maintained,
 which seems unnecessary given Taskwarrior's current syncing capabilities.
 
 OneNote manages notes in a custom data field directly in Taskwarrior, and
-automatically opens a Vim-style editor for managing notes efficiently.
+automatically opens a pipe editor for managing notes efficiently.
 
 ### Installation
 
@@ -56,8 +56,13 @@ hooks directory, and make sure it's executeable.
 ### Usage
 
 To add/edit notes attached to a task, execute ```onenote <task_id>```, which
-automatically opens a Vim-style editor for the notes. Upon save/exit of the
-editor, the new notes are updated on the task.
+automatically opens an editor for the notes.
+
+Upon save/exit of the editor, the new notes are updated on the task.
+
+Vipe, the default pipe editor, opens the note in Vim. You can override this
+with your own pipe editor by setting the ```ONENOTE_PIPE_EDITOR``` environment
+variable to another pipe editor available in your path.
 
 To remove notes, you can use the procedure above and completely remove all
 content in the editor, or for a shortcut modify the
@@ -74,6 +79,24 @@ echo "foo" | onenote <task_id> -
 ```
 
 **Just be aware this will overwrite any existing notes on the task!**
+
+#### Default note content (optional)
+
+You can configure default content for an empty note by setting the
+```ONENOTE_DEFAULT_CONTENT``` environment variable. If OneNote detects that
+the opened note is empty, it will insert the configured default content
+instead. If the note has any content at all, the default content will not be
+added to the note.
+
+This is an extremely handy feature when used with something like Vim's
+modelines. For example, the VimOutliner plugin registers the ```votl```
+filetype for its outlining functionality. With a Bash alias like this, you can
+ensure that the note always contains the correct modeline to activate the
+outliner, even if the note was originally empty:
+
+```sh
+alias outline="ONENOTE_DEFAULT_CONTENT='# vi: ft=votl' onenote"
+```
 
 ### VIT configuration (optional)
 
