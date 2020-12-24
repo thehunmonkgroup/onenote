@@ -80,7 +80,7 @@ echo "foo" | onenote <task_id> -
 
 **Just be aware this will overwrite any existing notes on the task!**
 
-### Environment variables
+#### Environment variables
 
 OneNote sets the environment variable ```ONENOTE_TASK``` for the pipe editor
 process, the value of which is the task ID/UUID associated with the note.
