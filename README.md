@@ -120,7 +120,7 @@ default project.
 
 ### VIT configuration (optional)
 
-If you're using a version of [VIT](https://github.com/scottkosty/vit) that
+If you're using a version of [VIT](https://github.com/vit-project/vit) that
 supports map commands, you can easily add a command to open a task's notes via
 onenote:
 
