@@ -103,6 +103,21 @@ outliner, even if the note was originally empty:
 alias outline="ONENOTE_DEFAULT_CONTENT='# vi: ft=votl' onenote"
 ```
 
+#### Converting a line in a note to a task (optional)
+
+The included ```vim-line-to-task.sh``` script provides integrated support for
+converting a line of text in a note to a task on the same project as the task
+that contains the note. For example, to configure the script to work with
+Vim/Vipe, add the following to your ```.vimrc```:
+
+```vimrc
+nnoremap <silent> <Leader>t :.w !/path/to/vim-line-to-task.sh<CR>
+```
+
+The script also has basic support for converting a line of text outside of
+OneNote's default editor, in this case it will assign the task to your configured
+default project.
+
 ### VIT configuration (optional)
 
 If you're using a version of [VIT](https://github.com/scottkosty/vit) that
