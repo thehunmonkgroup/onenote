@@ -90,7 +90,7 @@ else
     fi
     if [ $? -eq 0 ]; then
       # The literal line feed is necessary for POSIX compatibility with sed.
-      echo "${notes}" | sed "s/${newline}/\\$linefeed/g" | ${pipe_editor} | ${0} ${task_number} ${consume_arg}
+      echo "${notes}" | sed "s/${newline}/\\$linefeed/g" | ONENOTE_TASK=${task_number} ${pipe_editor} | ${0} ${task_number} ${consume_arg}
     fi
   fi
 fi

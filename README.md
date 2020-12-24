@@ -80,6 +80,11 @@ echo "foo" | onenote <task_id> -
 
 **Just be aware this will overwrite any existing notes on the task!**
 
+### Environment variables
+
+OneNote sets the environment variable ```ONENOTE_TASK``` for the pipe editor
+process, the value of which is the task ID/UUID associated with the note.
+
 #### Default note content (optional)
 
 You can configure default content for an empty note by setting the
@@ -104,8 +109,9 @@ If you're using a version of [VIT](https://github.com/scottkosty/vit) that
 supports map commands, you can easily add a command to open a task's notes via
 onenote:
 
-```
-map o=:!wr onenote %TASKID<Return>
+```dosini
+# Open OneNote for the current task.
+o = :!wr onenote {TASK_UUID}<Enter>
 ```
 
 Then in VIT, highlighting a task and hitting the ```o``` key will open the
