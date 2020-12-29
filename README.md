@@ -18,6 +18,7 @@ automatically opens a pipe editor for managing notes efficiently.
 
 #### Dependencies
 
+ * Taskwarrior (preferably 2.5.2 or greater)
  * Bash
  * Vipe pipe editor (readily available in the ```moreutils``` package on most platforms)
  * Python (if using the add/modify hooks)
@@ -158,7 +159,12 @@ Taskwarrior syntax, it's not advisable (except in the deletion case), as, by
 necessity, multiline UDA fields are stored as a single-line string with newline
 separators, which would be pretty tedious to navigate directly.
 
-Due to a
-[current bug](https://github.com/GothenburgBitFactory/taskwarrior/issues/2107)
-in Taskwarrior newlines are represented internally by the marker
-```###NEWLINE###```
+Because of
+[this bug](https://github.com/GothenburgBitFactory/taskwarrior/issues/2107),
+in Taskwarrior versions less than 2.5.2, newlines are represented internally by the marker
+```###NEWLINE###```. This is not an issue in TaskWarrior versions from 2.5.2 on.
+If you use OneNote with a Taskwarrior version less than 2.5.2, then
+upgrade to Taskwarrior version 2.5.2 or greater, you can use the
+[convert-5.1-to-5.2.sh](convert-5.1-to-5.2.sh) script to upgrade your tasks, but you are
+strongly encouraged to run ```convert-5.1-to-5.2.sh --help``` first and read the
+instructions -- the script will automatically edit **ALL** of your tasks!

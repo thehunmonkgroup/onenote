@@ -1,15 +1,57 @@
 #!/usr/bin/env bash
 
+TASK_VERSION_NO_NEWLINE="2.5.2"
+
 task_number=${1}
 consume_input=${2}
 
 progname=$(basename ${0})
-newline="###NEWLINE###"
+newline="\n"
 linefeed=$'\n'
 consume_arg="-"
 output=""
 default_pipe_editor="vipe"
 pipe_editor=${ONENOTE_PIPE_EDITOR:-${default_pipe_editor}}
+
+vercomp () {
+  if [[ $1 == $2 ]]
+  then
+    return 0
+  fi
+  local IFS=.
+  local i ver1=($1) ver2=($2)
+  # fill empty fields in ver1 with zeros
+  for ((i=${#ver1[@]}; i<${#ver2[@]}; i++))
+  do
+    ver1[i]=0
+  done
+  for ((i=0; i<${#ver1[@]}; i++))
+  do
+    if [[ -z ${ver2[i]} ]]
+    then
+      # fill empty fields in ver2 with zeros
+      ver2[i]=0
+    fi
+    if ((10#${ver1[i]} > 10#${ver2[i]}))
+    then
+      return 1
+    fi
+    if ((10#${ver1[i]} < 10#${ver2[i]}))
+    then
+      return 2
+    fi
+  done
+  return 0
+}
+
+vercomp $(task --version) ${TASK_VERSION_NO_NEWLINE}
+vercomp_result=$?
+test ${vercomp_result} = 2
+legacy_version=$?
+
+if [ $legacy_version -eq 0 ]; then
+  newline="###NEWLINE###"
+fi
 
 usage() {
   echo "Usage: ${progname} <task_id>
@@ -27,13 +69,15 @@ Notes can also be piped to standard in:
 CAVEATS:
 
 OneNote depends on the vipe pipe editor being installed and in your path.
-
-Due to a current bug in taskwarrior newlines are represented internally by the
-marker ${newline}:
+"
+if [ $legacy_version -eq 0 ]; then
+  echo "
+Due to a current bug in taskwarrior less than ${TASK_VERSION_NO_NEWLINE} newlines are represented
+internally by the marker ${newline}:
   https://github.com/GothenburgBitFactory/taskwarrior/issues/2107
 "
+fi
 }
-
 
 # Override the system task binary and pipe editor in testing env.
 if [ -n "${ONENOTE_TEST_HARNESS}" ]; then
