@@ -114,7 +114,7 @@ else
       usage
       exit 1
     else
-      while IFS='$\n' read -r line; do
+      while IFS=$'\n' read -r line; do
         if [ -z "${output}" ]; then
           output="${line}"
         else
