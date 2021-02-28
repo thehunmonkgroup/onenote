@@ -38,6 +38,13 @@ T_validTaskWithNoNotesReturnsEmptyNote() {
 }
 
 T_validTaskWithNotesReturnsValidFormattedNote() {
+  export ONENOTE_TEST_NOTES="foo\nbar\n\nbaz"
+  result="$(${executable} 1)"
+  echo "With notes result: ${result}"
+  [[ "${result}" = "${ONENOTE_TEST_NOTES}" ]]
+}
+
+T_validTaskWithNotesAndNewlineMarkerReturnsValidFormattedNote() {
   export ONENOTE_TEST_NOTES="foo${newline}bar${newline}${newline}baz"
   result="$(${executable} 1)"
   echo "With notes result: ${result}"
@@ -53,6 +60,14 @@ T_validTaskWithNoNotesWithDefaultContentReturnsNoteWithDefaultContent() {
 }
 
 T_validTaskWithNotesWithDefaultContentReturnsValidFormattedNote() {
+  export ONENOTE_TEST_NOTES="foo\nbar\n\nbaz"
+  export ONENOTE_DEFAULT_CONTENT="test"
+  result="$(${executable} 1)"
+  echo "With notes with default content result: ${result}"
+  [[ "${result}" = "${ONENOTE_TEST_NOTES}" ]]
+}
+
+T_validTaskWithNotesWithDefaultContentAndNewlineMarkerReturnsValidFormattedNote() {
   export ONENOTE_TEST_NOTES="foo${newline}bar${newline}${newline}baz"
   export ONENOTE_DEFAULT_CONTENT="test"
   result="$(${executable} 1)"
