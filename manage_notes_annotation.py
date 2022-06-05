@@ -67,6 +67,9 @@ def remove_notes_annotation(data):
   return data
 
 def manage_notes_annotation(data_before, data_after):
+  # Deletion case, just return the task as is.
+  if data_before and not data_after:
+    return data_before
   notes_exist = check_notes(data_after)
   notes_annotation_exists = check_notes_annotation(data_after)
   if check_notes_updated(data_before, data_after):
@@ -111,13 +114,18 @@ if __name__ == '__main__':
     first_line, second_line = read_stdin()
     task_before, task_after = load_task_data(first_line, second_line)
     if task_before:
-      log("Modifying current task")
-      log("Task before modification")
+      if task_after:
+        log("Modifying current task")
+        log("Task before modification")
+      else:
+        log("Deleting current task")
+        log("Task before deletion")
       log(json.dumps(task_before, sort_keys=True, indent=2))
     else:
       log("Adding new task")
-    log("Task after modification")
-    log(json.dumps(task_after, sort_keys=True, indent=2))
+    if task_after:
+      log("Task after modification")
+      log(json.dumps(task_after, sort_keys=True, indent=2))
     modified_task = manage_notes_annotation(task_before, task_after)
     log("Task after hook adjustments")
     log(json.dumps(modified_task, sort_keys=True, indent=2))
