@@ -68,7 +68,9 @@ Notes can also be piped to standard in:
 
 CAVEATS:
 
-OneNote depends on the vipe pipe editor being installed and in your path.
+OneNote depends on a pipe editor being installed and in your path. It defaults
+to the 'vipe' pipe editor, available on Linux in the 'moreutils' package. To
+use a custom pipe editor, set the environment variable 'ONENOTE_PIPE_EDITOR'.
 "
 if [ $legacy_version -eq 0 ]; then
   echo "
@@ -92,12 +94,17 @@ if [ -n "${ONENOTE_TEST_HARNESS}" ]; then
       fi
     else
       local notes="${3}"
-      echo "${notes:6}"
+      # TODO: This also strips out the single quotes added to work around
+      # https://github.com/GothenburgBitFactory/taskwarrior/issues/2645
+      # The below line should be used instead if that bug is fixed.
+      # echo "${notes:6}"
+      echo "${notes:7:-1}"
+
     fi
   }
 fi
 
-if [ "$(which ${pipe_editor})" = "" ]; then
+if [ "$(command -v ${pipe_editor})" = "" ]; then
   echo
   echo "ERROR: The '${pipe_editor}' binary must be installed and in your path!"
   echo
@@ -118,17 +125,21 @@ else
         if [ -z "${output}" ]; then
           output="${line}"
         else
-          output="${output}${newline}${line}"
+          output="${output}${linefeed}${line}"
         fi
       done
-      task ${task_number} modify notes:"${output}"
+      # TODO: The extra single quotes are added to work around
+      # https://github.com/GothenburgBitFactory/taskwarrior/issues/2645
+      # The below line should be used instead if that bug is fixed.
+      # task ${task_number} modify notes:"${output}"
+      task ${task_number} modify notes:"'${output}'"
     fi
   else
     if [ "$(task _config | grep 'uda.notes.type')" = "" ] || [ "$(task _config | grep 'uda.notes.label')" = "" ]; then
       usage
       exit 1
     fi
-    notes=$(task _get ${task_number}.notes)
+    notes="$(task _get ${task_number}.notes)"
     if [ -n "${ONENOTE_DEFAULT_CONTENT}" -a -z "${notes}" ]; then
       notes="${ONENOTE_DEFAULT_CONTENT}"
     fi
